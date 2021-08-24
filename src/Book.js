@@ -49,7 +49,7 @@ const Book = props=>{
                 </div>
             </div>
             <div className="book-title">{title}</div>
-            <div className="book-authors">{authors}</div>
+            <div className="book-authors">{Array.isArray(authors) ? book.authors.join(', ') : ''}</div>
         </div>
     </li>);
 }
