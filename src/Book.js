@@ -22,7 +22,7 @@ const Book = props=>{
         if (props.book.shelf === 'read')
             shelfstext[2] = selectedicon + " Read";
         else shelfstext[2] = "Read";        
-        if (props.book.shelf === 'none')
+        if (props.book.shelf === undefined)
             shelfstext[3] = selectedicon + " None";
         else shelfstext[3] = "None";
     }

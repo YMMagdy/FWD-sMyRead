@@ -32,7 +32,9 @@ class BooksApp extends React.Component {
       books:bs})
     }
     else {
-      this.state.books.push(b);
+      var e = this.state.books;
+      e.push(b);
+      this.setState({ books: e });
     }
     BooksAPI.update(b,b.shelf);//Updating the book and its shelf
   }

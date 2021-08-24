@@ -23,14 +23,15 @@ componentWillMount(){
 
     //Updating the keyword whenever an event occurs
     updateKeyword = (k) => {
-        if(k===''){}
+        if(k===''){this.clear()}
         else{
         this.setState(({
             keyword: k.trim(),
         }))
         console.log(this.state.keyword)
         if(this.state.keyword!=='' && !this.state.keyword.includes(' '))//To prevent the calling when the input is empty and prevent returning an empty array to the state
-        BooksAPI.search(this.state.keyword).then((bs) => {
+        BooksAPI.search(k).then((bs) => {
+            if(bs.error===undefined||bs.error===null)
             this.setState({
                 booksretrieved: bs,
             })
@@ -49,9 +50,8 @@ componentWillMount(){
     //What will be returned to the instance of the App
     render(){
         const b=Object.values(this.state.booksretrieved);
-        const ba=this.state.books;
         const bookstobesearched = k => k === ''
-            ? ba
+            ? b
             : b.filter((book) => (
                 book.title.toLowerCase().includes(k.toLowerCase()) 
                 || book.authors[0].toLowerCase().includes(k.toLowerCase()) 
