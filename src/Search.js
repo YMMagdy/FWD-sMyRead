@@ -12,7 +12,6 @@ state={
 }
 
 componentWillMount(){
-    console.log(this.state.books);
     BooksAPI.getAll().then((bs) => {
         this.setState({
             books: bs,
@@ -23,18 +22,28 @@ componentWillMount(){
 
     //Updating the keyword whenever an event occurs
     updateKeyword = (k) => {
-        if(k===''){}
+        if(k===''){this.setState({booksretrieved:[]})}
         else{
         this.setState(({
             keyword: k.trim(),
         }))
-        console.log(this.state.keyword)
         if(this.state.keyword!=='' && !this.state.keyword.includes(' '))//To prevent the calling when the input is empty and prevent returning an empty array to the state
-        BooksAPI.search(this.state.keyword).then((bs) => {
+        BooksAPI.search(k).then((bs) => {
+            if (bs["error"] === "empty query" ){
+                this.setState({
+                    booksretrieved:[]})
+            }
+            else{
+            var ids=[];
+            for(var i=0;i<this.state.books.length;i++){
+                ids.push(this.state.books[i].id);
+            }
+            var b = bs.filter((book) => (book['imageLinks']!==undefined && book["authors"]!==undefined && !ids.some(o=>book.id.includes(o))));//Filter the books to have no undefined author and image links and is not already added in shelfs 
+            b = this.state.books.concat(b);//Adding the books already on shelfs in the books retrieved with their shelfs present
             this.setState({
-                booksretrieved: bs,
+                booksretrieved: b,
             })
-            console.log(this.state.booksretrieved)
+            }
         }//This is called in order to get all of the books using an API
         );
         }
@@ -48,14 +57,12 @@ componentWillMount(){
 
     //What will be returned to the instance of the App
     render(){
-        const b=Object.values(this.state.booksretrieved);
-        const ba=this.state.books;
+        var b=Object.values(this.state.booksretrieved);
         const bookstobesearched = k => k === ''
-            ? ba
+            ? b
             : b.filter((book) => (
                 book.title.toLowerCase().includes(k.toLowerCase()) 
                 || book.authors[0].toLowerCase().includes(k.toLowerCase()) 
-                || book.authors[book.authors.length-1].toLowerCase().includes(k.toLowerCase())
             ))//The search by the title or the name of the authors
         const k = this.state.keyword;//The keyword
         const bookstoberetrieved = bookstobesearched(k);//What books should be displayed with respect to the current keyword in the search box
