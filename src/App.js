@@ -25,10 +25,15 @@ class BooksApp extends React.Component {
   handleMove = b =>{
     var bs=this.state.books;
     const i = bs.findIndex(book=>book.id===b.id)
-    console.log(i)
-    bs[i]=b;
+    if(i!==-1)
+    {
+      bs[i]=b;
     this.setState({ 
       books:bs})
+    }
+    else {
+      this.state.books.push(b);
+    }
     BooksAPI.update(b,b.shelf);//Updating the book and its shelf
   }
 

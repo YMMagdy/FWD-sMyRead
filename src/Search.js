@@ -6,8 +6,9 @@ import Book from './Book';
 
 class Search extends React.Component{
 state={
-    keyword: '',//The keyword being inserted to the search input
+    keyword:'',//The keyword being inserted to the search input
     books:[],//All of the books in the app
+    booksretrieved:[],
 }
 
 componentWillMount(){
@@ -22,10 +23,21 @@ componentWillMount(){
 
     //Updating the keyword whenever an event occurs
     updateKeyword = (k) => {
+        if(k===''){}
+        else{
         this.setState(({
-            keyword: k.trim()
+            keyword: k.trim(),
         }))
-        BooksAPI.search(this.state.keyword);
+        console.log(this.state.keyword)
+        if(this.state.keyword!=='' && !this.state.keyword.includes(' '))//To prevent the calling when the input is empty and prevent returning an empty array to the state
+        BooksAPI.search(this.state.keyword).then((bs) => {
+            this.setState({
+                booksretrieved: bs,
+            })
+            console.log(this.state.booksretrieved)
+        }//This is called in order to get all of the books using an API
+        );
+        }
     }
 
     //Clearing the keyword
@@ -36,9 +48,10 @@ componentWillMount(){
 
     //What will be returned to the instance of the App
     render(){
-        const b=this.state.books;
+        const b=Object.values(this.state.booksretrieved);
+        const ba=this.state.books;
         const bookstobesearched = k => k === ''
-            ? b
+            ? ba
             : b.filter((book) => (
                 book.title.toLowerCase().includes(k.toLowerCase()) 
                 || book.authors[0].toLowerCase().includes(k.toLowerCase()) 
