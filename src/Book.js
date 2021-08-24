@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Book = props=>{
-    const imgAPI= props.book.imageLinks.thumbnail;//Book's image
+    const imgAPI = props.book.imageLinks.thumbnail;//Book's image
     const title = props.book.title;//Book's title
     const authors=props.book.authors;//Book's author/s
     var book=props.book;//The book
@@ -45,6 +45,7 @@ const Book = props=>{
                         <option value="wantToRead">{shelfstext[1]}</option>
                         <option value="read">{shelfstext[2]}</option>
                         <option value="none">{shelfstext[3]}</option>
+                        <option hidden></option>
                     </select>
                 </div>
             </div>
