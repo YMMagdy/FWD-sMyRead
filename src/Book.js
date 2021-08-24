@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Book = props=>{
-    const imgAPI= props.book.imageLinks.thumbnail;
-    const title = props.book.title;
-    const authors=props.book.authors;
-    //const shelf=props.book.shielf;
-    // console.log(props.book.shelf);
-    var book=props.book;
+    const imgAPI= props.book.imageLinks.thumbnail;//Book's image
+    const title = props.book.title;//Book's title
+    const authors=props.book.authors;//Book's author/s
+    var book=props.book;//The book
 
-    const selectedicon = "✓";
+    const selectedicon = "✓"; //The tick icon for selection purposes
     
-    var shelfstext = [];
+    var shelfstext = [];//What should be written in each option
+
+    //A for loop to assign the tick to the selected shelf
     for(let i =0 ; i<4; i++){
         if (props.book.shelf ==='currentlyReading')
             shelfstext[0]=selectedicon + " Currently Reading";
@@ -27,14 +27,12 @@ const Book = props=>{
         else shelfstext[3] = "None";
     }
 
-
+    //This is the handle for changing shelfs in here
     function handle(e){
         book.shelf = e.target.value;
-        // e.target.selected=true;
-        console.log(e.target.value);
         props.handlemove(book);
     }
-
+    //What is returned when 'Book is called'
     return (<li>
         <div className="book">
             <div className="book-top">

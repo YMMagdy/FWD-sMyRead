@@ -6,8 +6,8 @@ import Book from './Book';
 
 class Search extends React.Component{
 state={
-    keyword:'',
-    books:[],
+    keyword: '',//The keyword being inserted to the search input
+    books:[],//All of the books in the app
 }
 
 componentWillMount(){
@@ -16,10 +16,11 @@ componentWillMount(){
         this.setState({
             books: bs,
         });
-    })
+    })//Getting all of the books using an API
 
 }
 
+    //Updating the keyword whenever an event occurs
     updateKeyword = (k) => {
         this.setState(({
             keyword: k.trim()
@@ -27,53 +28,41 @@ componentWillMount(){
         BooksAPI.search(this.state.keyword);
     }
 
+    //Clearing the keyword
     clear = () => {
         this.updateKeyword('')
     }
 
 
-
+    //What will be returned to the instance of the App
     render(){
         const b=this.state.books;
-        console.log(b);
         const bookstobesearched = k => k === ''
             ? b
             : b.filter((book) => (
                 book.title.toLowerCase().includes(k.toLowerCase()) 
                 || book.authors[0].toLowerCase().includes(k.toLowerCase()) 
                 || book.authors[book.authors.length-1].toLowerCase().includes(k.toLowerCase())
-            ))
-        const k = this.state.keyword;
-        const bookstoberetrieved = bookstobesearched(k);
-        //console.log("Books in search" + bookstobesearched);
+            ))//The search by the title or the name of the authors
+        const k = this.state.keyword;//The keyword
+        const bookstoberetrieved = bookstobesearched(k);//What books should be displayed with respect to the current keyword in the search box
         return(
             <div className="search-books">
                 <div className="search-books-bar">
                     <Link to="/" className="close-search"><button className="close-search">Close</button></Link>
                     <div className="search-books-input-wrapper">
-                        {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
                         <input type="text" placeholder="Search by title or author" onChange={e=>{this.updateKeyword(e.target.value)}}/>
                     </div>
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {/* {console.log(bookstobesearched)} */}
                         <div className="bookshelf-books">
                             <ol className="books-grid">
-                                
-                                    
-                                    {console.log(bookstoberetrieved)}
                                     {
                                     bookstoberetrieved.map(bo => {
                                         return <Book key={bo.id} id={bo.id} book={bo} handlemove={this.props.handlemove} />
                                     })
+                                    //Returning the books that fits the search's criteria
                                     }
                             </ol>
                         </div>

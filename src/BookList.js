@@ -4,27 +4,25 @@ import PropTypes from 'prop-types';
 
 class BookList extends React.Component{
     state = {
-        books:[],
-        shelf:'',
+        books:[],//The list of books
+        shelf:'',//The name of the shelf
     };
 
     componentDidMount(){
-        this.setState(() => ({ shelf: this.props.shelf }));
+        this.setState(() => ({ shelf: this.props.shelf }));//Updating the state (shelf)
     }
 
 render(){
-const bs=this.props.books;
-    // const bookss = bs.filter(b=>b.shelf === this.state.shelf);
-    // console.log(bookss);
-    var shelf;
+    const bs=this.props.books;
+    var shelf;//For writting the name of the shelf properly
     if (this.state.shelf ==='currentlyReading')
          shelf='Currently Reading';
     else if (this.state.shelf ==='wantToRead')
         shelf ='Want To Read';
     else if (this.state.shelf==='read')
         shelf='Read';
-    else shelf = 'All'
-    return (
+    else shelf = 'none'
+    return (//What will be returned
     <div className="bookshelf">
         <h2 className="bookshelf-title">{shelf}</h2>
         <div className="bookshelf-books">
